@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#173f33">
+  <title>Informatica Facile</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect x='3' y='6' width='34' height='22' rx='3' fill='%23173f33'/><rect x='6' y='9' width='28' height='16' rx='1' fill='%23f7f0de'/><path d='M20 12c-2 3-5 4-5 7a3 3 0 0 0 5 2 3 3 0 0 0 5-2c0-3-3-4-5-7z' fill='%23b3261e'/><rect x='14' y='30' width='12' height='3' rx='1' fill='%23173f33'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;700&family=Fredoka:wght@500;600&family=Rye&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/boss.css">
+  <link rel="stylesheet" href="/nuovi.css">
+</head>
+<body>
+  <!-- simboli dei semi, usati da tutte le carte -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="s-c" viewBox="0 0 100 100"><path fill="currentColor" d="M50 90C22 68 6 52 6 32 6 17 17 7 30 7c9 0 16 5 20 12 4-7 11-12 20-12 13 0 24 10 24 25 0 20-16 36-44 58z"/></symbol>
+    <symbol id="s-q" viewBox="0 0 100 100"><path fill="currentColor" d="M50 4 86 50 50 96 14 50z"/></symbol>
+    <symbol id="s-p" viewBox="0 0 100 100"><path fill="currentColor" d="M50 5C36 24 8 40 8 60c0 13 10 22 22 22 7 0 13-3 16-8-1 9-5 16-12 22h32c-7-6-11-13-12-22 3 5 9 8 16 8 12 0 22-9 22-22C92 40 64 24 50 5z"/></symbol>
+    <symbol id="s-f" viewBox="0 0 100 100"><path fill="currentColor" d="M50 6a21 21 0 0 0-18 32 21 21 0 1 0 14 34c-1 9-5 16-12 22h32c-7-6-11-13-12-22a21 21 0 1 0 14-34A21 21 0 0 0 50 6z"/></symbol>
+  </svg>
+
+  <!-- Ingresso -->
+  <main id="schermo-home" class="schermo">
+    <div class="home">
+      <header class="testata">
+        <h1 class="titolo">Informatica Facile</h1>
+        <p class="sottotitolo">Scegli un gioco, sfida il computer o apri un tavolo e manda il codice agli amici.</p>
+      </header>
+
+      <!-- il nome si chiede all'apertura del sito (finestra di benvenuto); qui si vede e si può cambiare -->
+      <div class="saluto" id="saluto">
+        <span>Ciao, <b id="nome-mostrato"></b>!</span>
+        <input id="nome" type="hidden">
+      </div>
+
+      <section class="blocco">
+        <h2>A cosa giochiamo?</h2>
+        <div class="filtri" role="search">
+          <input id="filtro-nome" type="search" placeholder="Cerca un gioco per nome…" aria-label="Cerca un gioco per nome" autocomplete="off">
+          <label class="filtro-sel"><span>Giocatori</span>
+            <select id="filtro-giocatori" aria-label="Numero di giocatori">
+              <option value="">tutti</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8+</option>
+            </select></label>
+          <div class="filtro-tipo" id="filtro-tipo" role="group" aria-label="Contro chi">
+            <button type="button" data-tipo="" aria-pressed="true">Tutti</button>
+            <button type="button" data-tipo="bot" aria-pressed="false">🤖 Col computer</button>
+            <button type="button" data-tipo="persone" aria-pressed="false">👥 Solo persone</button>
+          </div>
+          <button type="button" class="bottone mini-bt" id="filtro-azzera" hidden>✕ Togli i filtri</button>
+        </div>
+        <p id="filtro-vuoto" class="piccolo" hidden>Nessun gioco con questi filtri.</p>
+        <div id="elenco-giochi" class="elenco-giochi"></div>
+      </section>
+
+      <section id="impostazioni" class="blocco impostazioni" hidden>
+        <div class="imp-testa">
+          <h2 id="imp-titolo"></h2>
+          <button class="bottone piccolo-bt" data-regole-di="">Regole</button>
+        </div>
+        <div class="imp-riga">
+          <span>Giocatori</span>
+          <div id="scelta-posti" class="segmenti"></div>
+        </div>
+        <div id="imp-opzioni"></div>
+
+        <div class="due-strade">
+          <div class="strada" id="strada-computer">
+            <h3 id="titolo-computer">Contro il computer</h3>
+            <div class="segmenti" id="scelta-livello">
+              <button type="button" data-livello="facile">Facile</button>
+              <button type="button" data-livello="medio" aria-pressed="true">Medio</button>
+              <button type="button" data-livello="difficile">Difficile</button>
+            </div>
+            <button id="gioca-solo" class="bottone primario">Gioca adesso</button>
+          </div>
+          <div class="strada">
+            <h3>Con gli amici</h3>
+            <p class="piccolo" id="nota-amici">Apri il tavolo e manda il link. I posti vuoti puoi riempirli col computer.</p>
+            <button id="crea" class="bottone primario chiaro">Apri un tavolo</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="blocco">
+        <h2>Hai un codice?</h2>
+        <div class="riga">
+          <input id="codice" maxlength="4" placeholder="ABCD" autocapitalize="characters" aria-label="Codice del tavolo">
+          <button id="entra" class="bottone">Siediti</button>
+        </div>
+      </section>
+
+      <section class="blocco studio-imp">
+        <h2>Modalità studio</h2>
+        <p class="piccolo">Premi <kbd>Esc</kbd> in qualsiasi momento per aprire le dispense. Per tornare dove eri premi <kbd>/</kbd> o <kbd>\</kbd>, oppure scrivi <b>gioca</b>. La partita continua a essere salvata. In chat scrivi <b>!prof</b> per aprire le dispense a tutto il tavolo.</p>
+        <label class="studio-riga"><input type="checkbox" id="studio-grigia"><span>Apri le dispense se resto fuori dalla finestra per più di</span>
+          <input type="number" id="studio-secondi" min="5" max="600" step="5" aria-label="Secondi"><span>secondi</span></label>
+      </section>
+    </div>
+  </main>
+
+  <!-- Sala d'attesa -->
+  <main id="schermo-attesa" class="schermo" hidden>
+    <div class="attesa">
+      <p class="piccolo">Codice del tavolo</p>
+      <div id="codice-grande" class="codice-grande"></div>
+      <button id="copia-link" class="bottone">Copia il link da mandare</button>
+
+      <p id="avviso-in-sala" class="avviso-in-sala" hidden>🚪 Sei tornato al tavolo: gli altri stanno finendo la partita. Quando finisce, si riparte tutti insieme da qui.</p>
+      <div class="sala-gioco">
+        <div id="sala-gioco-nome" class="sala-gioco-nome"></div>
+        <div id="sala-gioco-scelta" hidden>
+          <select id="sala-select" aria-label="Gioco"></select>
+          <div id="sala-opzioni"></div>
+        </div>
+        <button class="bottone piccolo-bt" data-regole-di="">Regole</button>
+      </div>
+
+      <ul id="lista-posti" class="lista-posti"></ul>
+      <p id="nota-attesa" class="piccolo"></p>
+      <button id="inizia" class="bottone primario" hidden>Inizia la partita</button>
+      <form id="form-chat-sala" class="riga chat-sala">
+        <input id="testo-chat-sala" maxlength="160" placeholder="Scrivi a chi è al tavolo" autocomplete="off" aria-label="Messaggio">
+        <button class="bottone">Invia</button>
+      </form>
+      <p class="suggerimento-prof">💡 Comando rapido: usa <b>!prof</b> per attivare il Boss Key per tutti i giocatori della stanza.</p>
+      <button id="esci-attesa" class="bottone leggero">Lascia il tavolo</button>
+    </div>
+    <div id="bolle-attesa"></div>
+  </main>
+
+  <!-- Tavolo -->
+  <main id="schermo-gioco" class="schermo" hidden>
+    <header class="barra">
+      <div class="barra-sx">
+        <button id="esci-gioco" class="bottone piccolo-bt" aria-label="Esci dalla partita">Esci</button>
+        <span id="barra-titolo" class="barra-titolo"></span>
+      </div>
+      <span id="stato-turno" class="stato-turno" aria-live="polite"></span>
+      <div class="barra-dx">
+        <button id="suono" class="bottone piccolo-bt icona-bt" aria-label="Suoni" title="Suoni"></button>
+        <button id="torna-tavolo" class="bottone piccolo-bt" type="button" title="Esci da questa partita e torna al tavolo (gli altri continuano)" aria-label="Torna al tavolo"><span class="solo-stretto" aria-hidden="true">🚪</span><span class="solo-largo">🚪 Torna al tavolo</span></button>
+        <button id="termina-voto" class="bottone piccolo-bt" title="Proponi di terminare la partita: decide la maggioranza" aria-label="Termina la partita a votazione"><span class="solo-stretto" aria-hidden="true">🗳️</span><span class="solo-largo">Termina</span></button>
+        <button class="bottone piccolo-bt" data-regole-di="">Regole</button>
+        <button id="apri-globale-tavolo" class="bottone piccolo-bt" type="button" title="Chat globale" aria-label="Chat globale">🌍<span id="globale-non-letti-tavolo" class="pallino" hidden></span></button>
+        <button id="apri-chat" class="bottone piccolo-bt">Chat<span id="non-letti" class="pallino" hidden></span></button>
+      </div>
+    </header>
+    <div id="punteggio" class="punteggio" hidden></div>
+    <div id="pausa-studio" class="pausa-studio" hidden></div>
+    <div id="voto-fine" class="voto-fine" hidden role="status"></div>
+
+    <div class="tavolo" id="tavolo">
+      <div class="posto-altro pos-alto" data-slot="2"></div>
+      <div class="posto-altro pos-sinistra" data-slot="3"></div>
+      <div class="posto-altro pos-destra" data-slot="1"></div>
+      <div id="panno" class="panno"></div>
+      <div class="io">
+        <div id="mio-nome" class="mio-nome" data-slot="0"></div>
+        <div id="azioni" class="azioni"></div>
+        <div id="mano" class="mano"></div>
+      </div>
+    </div>
+
+    <aside id="chat" class="chat" hidden>
+      <div class="chat-testa"><strong>Chat</strong><button id="chiudi-chat" class="bottone piccolo-bt">Chiudi</button></div>
+      <ol id="messaggi" class="messaggi"></ol>
+      <p class="suggerimento-prof">💡 Comando rapido: usa <b>!prof</b> per attivare il Boss Key per tutti i giocatori della stanza.</p>
+      <p id="suggerimento-ricarica" class="suggerimento-prof suggerimento-ricarica" hidden>💰 Hai finito le fiche: <button type="button" class="bottone mini-bt" data-rapido="!ricarica">!ricarica</button> te ne ridà di nuove.</p>
+      <div class="rapidi" id="rapidi"></div>
+      <form id="form-chat" class="riga">
+        <input id="testo-chat" maxlength="160" placeholder="Scrivi agli altri" autocomplete="off">
+        <button class="bottone">Invia</button>
+      </form>
+    </aside>
+
+    <div id="riepilogo" class="velo" hidden><div class="scheda" id="riepilogo-scheda"></div></div>
+    <div id="fine-barra" class="fine-barra" hidden role="status"></div>
+    <div id="fine" class="velo" hidden><div class="scheda" id="fine-scheda"></div></div>
+  </main>
+
+  <div id="regole" class="velo" hidden>
+    <div class="scheda scheda-regole">
+      <h2 id="regole-titolo"></h2>
+      <ol id="regole-testo" class="regole-testo"></ol>
+      <button id="chiudi-regole" class="bottone primario">Ho capito</button>
+    </div>
+  </div>
+
+  <div id="conferma" class="velo" hidden>
+    <div class="scheda">
+      <h2>Lasci la partita?</h2>
+      <p id="conferma-testo" class="piccolo"></p>
+      <button id="conferma-si" class="bottone primario">Sì, esci</button>
+      <button id="conferma-no" class="bottone leggero">Resta a giocare</button>
+    </div>
+  </div>
+
+  <div id="annuncio" class="annuncio" aria-live="assertive" hidden></div>
+  <div id="avviso" class="avviso" role="status" hidden></div>
+
+  <!-- benvenuto: all'apertura del sito si sceglie il nome, poi si va ai giochi -->
+  <div id="benvenuto" class="velo benvenuto" hidden>
+    <form class="scheda" id="form-nome" novalidate>
+      <h2 id="benvenuto-titolo">Benvenuto su Informatica Facile!</h2>
+      <p id="benvenuto-testo">Come ti chiami? È il nome che vedranno gli altri giocatori, e non si potrà cambiare: sceglilo bene!</p>
+      <input id="nome-ingresso" maxlength="18" autocomplete="nickname" placeholder="Il tuo nome" aria-label="Il tuo nome">
+      <p id="nome-errore" class="nome-errore" role="alert" hidden></p>
+      <button class="bottone primario" type="submit">Entra 🎮</button>
+    </form>
+  </div>
+
+  <!-- pannello dell'amministratore (si apre solo con il comando segreto) -->
+  <aside id="admin" class="chat admin" hidden aria-label="Amministrazione">
+    <div class="chat-testa"><strong>⚓ Ammiragliato</strong><button id="chiudi-admin" class="bottone piccolo-bt" type="button">Chiudi</button></div>
+    <p class="piccolo">Chi è online adesso. "Esilia" lo manda in fondo al mare davanti a tutti e non può tornare per il tempo scelto.</p>
+    <div class="admin-opz">
+      <label>Esilio per <select id="admin-durata"><option value="10">10 minuti</option><option value="60" selected>1 ora</option><option value="1440">1 giorno</option><option value="10080">1 settimana</option></select></label>
+      <label title="Blocca anche l'indirizzo internet: a scuola vale per tutta la classe!"><input type="checkbox" id="admin-ip"> anche l'indirizzo</label>
+    </div>
+    <div class="admin-comandi">
+      <p class="piccolo" id="admin-comandi-stato">Comandi della chat: attivi</p>
+      <label>Spegni i comandi <select id="admin-comandi-durata"><option value="5">5 minuti</option><option value="15" selected>15 minuti</option><option value="60">1 ora</option><option value="-1">fino al riavvio</option><option value="altro">minuti a scelta…</option></select></label>
+      <div class="riga"><button type="button" class="bottone mini-bt" id="admin-comandi-spegni">🔇 Spegni</button><button type="button" class="bottone mini-bt" id="admin-comandi-accendi">🔊 Riaccendi</button></div>
+      <p class="piccolo">!prof e !ricarica restano sempre attivi.</p>
+    </div>
+    <ol id="admin-lista" class="admin-lista"></ol>
+    <div id="admin-esiliati"></div>
+  </aside>
+  <div id="esiliato" class="esiliato" hidden role="alert"></div>
+
+  <!-- chat globale: tutto il sito, da ogni pagina -->
+  <button id="apri-globale" class="bottone piccolo-bt apri-globale" type="button" aria-label="Chat globale">🌍 Chat globale<span id="globale-non-letti" class="pallino" hidden></span></button>
+  <aside id="globale" class="chat chat-globale" hidden aria-label="Chat globale">
+    <div class="chat-testa"><strong>🌍 Chat globale</strong><button id="chiudi-globale" class="bottone piccolo-bt" type="button">Chiudi</button></div>
+    <p class="piccolo">La leggono tutti quelli che sono sul sito, in ogni tavolo.</p>
+    <ol id="messaggi-globale" class="messaggi"></ol>
+    <form id="form-globale" class="riga">
+      <input id="testo-globale" maxlength="200" placeholder="Scrivi a tutto il sito" autocomplete="off" aria-label="Messaggio per la chat globale">
+      <button class="bottone">Invia</button>
+    </form>
+  </aside>
+  <footer class="firma" aria-label="Autore">made by chry_pala</footer>
+
+  <!-- Boss Key: prima di tutto il resto, così vale per ogni pagina e ogni gioco -->
+  <script src="/js/boss-pagina.js"></script>
+  <script src="/js/boss.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/scala-regole.js"></script>
+  <script src="/js/navale-regole.js"></script>
+  <script src="/js/carte.js"></script>
+  <script src="/js/tavoli.js"></script>
+  <script src="/js/tavoli-tabellone.js"></script>
+  <script src="/js/giochi/comuni.js"></script>
+  <script src="/js/giochi/impostore.js"></script>
+  <script src="/js/giochi/coccodrillo.js"></script>
+  <script src="/js/giochi/blockblast.js"></script>
+  <script src="/js/giochi/peppa-carte.js"></script>
+  <script src="/js/giochi/peppa.js"></script>
+  <script src="/js/giochi/fastwest-carte.js"></script>
+  <script src="/js/giochi/fastwest.js"></script>
+  <script src="/js/giochi/wordle.js"></script>
+  <script src="/js/giochi/angolo.js"></script>
+  <script src="/js/giochi/sudoku.js"></script>
+  <script src="/js/giochi/snake.js"></script>
+  <script src="/js/giochi/tetris.js"></script>
+  <script src="/js/giochi/airhockey.js"></script>
+  <script src="/js/giochi/pallone.js"></script>
+  <script src="/js/giochi/interruttori.js"></script>
+  <script src="/js/giochi/casellebombe.js"></script>
+  <script src="/js/giochi/tesoro.js"></script>
+  <script src="/js/giochi/coperti.js"></script>
+  <script src="/js/giochi/dubito.js"></script>
+  <script src="/js/giochi/nascondino.js"></script>
+  <script src="/js/giochi/mappa.js"></script>
+  <script src="/js/giochi/tasti.js"></script>
+  <script src="/js/giochi/mensola.js"></script>
+  <script src="/js/giochi/mind.js"></script>
+  <script src="/js/giochi/flip7.js"></script>
+  <script src="/js/giochi/cirulla.js"></script>
+  <script src="/js/giochi/solitario.js"></script>
+  <script src="/js/giochi/chirurgo.js"></script>
+  <script src="/js/giochi/benchmark.js"></script>
+  <script src="/js/risiko-mappa.js"></script>
+  <script src="/js/giochi/risiko.js"></script>
+  <script src="/js/giochi/disegna.js"></script>
+  <script src="/js/putt-buche.js"></script>
+  <script src="/js/giochi/putt.js"></script>
+  <script src="/js/giochi/arena.js"></script>
+  <script src="/js/giochi/squid.js"></script>
+  <script src="/js/giochi/palloncini.js"></script>
+  <script src="/js/giochi/gattotopi.js"></script>
+  <script src="/js/giochi/colori.js"></script>
+  <script src="/js/giochi/bumper.js"></script>
+  <script src="/js/giochi/differenze.js"></script>
+  <script src="/js/giochi/salita.js"></script>
+  <script src="/js/giochi/arcobaleno.js"></script>
+  <script src="/js/giochi/pioggia.js"></script>
+  <script src="/js/giochi/paintball.js"></script>
+  <script src="/js/giochi/piattaforme.js"></script>
+  <script src="/js/giochi/massi.js"></script>
+  <script src="/js/giochi/stella.js"></script>
+  <script src="/js/giochi/fune.js"></script>
+  <script src="/js/giochi/dalgona.js"></script>
+  <script src="/js/giochi/buio.js"></script>
+  <script src="/js/giochi/alieno.js"></script>
+  <script src="/js/giochi/shutbox.js"></script>
+  <script src="/js/giochi/sblocca.js"></script>
+  <script src="/js/giochi/wanted.js"></script>
+  <script src="/js/giochi/duello.js"></script>
+  <script src="/js/strada-mondo.js"></script>
+  <script src="/js/giochi/strada.js"></script>
+  <script src="/js/giochi/bersaglio.js"></script>
+  <script src="/js/giochi/mangiatutto.js"></script>
+  <script src="/js/tigerball-livelli.js"></script>
+  <script src="/js/giochi/tigerball.js"></script>
+  <script src="/js/esecuzione.js"></script>
+  <script src="/js/esilio.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
