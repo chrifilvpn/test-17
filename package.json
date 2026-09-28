@@ -1,0 +1,18 @@
+{
+  "name": "informatica-facile",
+  "version": "2.0.0",
+  "description": "Giochi online con amici o contro il computer: carte, tabelloni, giochi in tempo reale",
+  "main": "server.js",
+  "scripts": {
+    "start": "node verifica.js && node server.js",
+    "test": "node test/simula.js",
+    "verifica": "node verifica.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}
